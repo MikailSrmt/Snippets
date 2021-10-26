@@ -1,4 +1,4 @@
-select current_user_id; -- get your user_id
+select current_user_id; -- get your database user id
 
 SELECT * -- put your user_id and find the query you just run and get query id from query column
 FROM SVL_S3QUERY_SUMMARY
