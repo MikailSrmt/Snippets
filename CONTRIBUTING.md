@@ -1,0 +1,3 @@
+- Put your snippet to related folder. If folder is not exist create one.
+- Put a related file name.
+- Put a related file extension based on your code.
