@@ -9,6 +9,7 @@ class FlickerClient{
         static let base = "https://api.flickr.com/services/rest/?method=flickr.photos.search"
         
         case getPhotos(Double, Double)
+        case getUrls(String, String, String)
         
         struct Auth {
             static let apikey = "your_api_key"
@@ -19,6 +20,8 @@ class FlickerClient{
             
             switch self {
             case .getPhotos(let latitude, let longitude): return Endpoints.base + "&api_key=\(Auth.apikey)&lat=\(latitude)&lon=\(longitude)&per_page=20&page=\(Int.random(in: 1...10))&format=json&nojsoncallback=1"
+            case .getUrls(let serverId, let id, let secret): return "https://live.staticflickr.com/\(serverId)/\(id)_\(secret).jpg"
+            }
             }
             
             var url: URL{
@@ -63,5 +66,16 @@ class FlickerClient{
                 completion(nil, error)
             }
         }
+    }
+    
+    class func downloadPhotos(serverId: String, id: String, secret: String, completion: @escaping (Data?, Error?)-> Void){
+        
+        let task = URLSession.shared.dataTask(with: Endpoints.getUrls(serverId, id, secret).url) { data, response, error in
+            DispatchQueue.main.async {
+                completion(data, error)
+                print("album downloaded")
+            }
+        }
+        task.resume()
     }
 }
